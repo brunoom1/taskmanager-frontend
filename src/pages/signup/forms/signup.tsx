@@ -1,8 +1,9 @@
-import { Button, Field, Input, Label } from "@fluentui/react-components";
-import React, { FormEventHandler, useCallback, useEffect, useState } from "react";
+import { Button, Field, Input} from "@fluentui/react-components";
+import React, { useEffect } from "react";
 import { ButtonContainer } from "./style";
 import { useFormHook } from "./../../../hooks/useFormHook";
-
+import { NameValidator } from "../../../validators/name";
+import { getFieldPropsStateError } from "../../../fluentHelp/getFieldPropsStateError";
 
 export const SignupForm = () => {
 
@@ -14,15 +15,13 @@ export const SignupForm = () => {
             "name", "email", "password", "repassword"
         ],
         validators: {
-            name: (name, allValues) => {
-                console.log(name, allValues);
-
-                return [false, {message: "Nome não pode ser vasio"}] 
-            }
+            name: NameValidator
         }
     });
 
     useEffect(() => {
+
+        console.log(inputsState)
 
     }, [inputsState])
 
@@ -30,7 +29,7 @@ export const SignupForm = () => {
 return <>
     <form onSubmit={ formSubmit }>
         <div>
-            <Field label={"Nome"} required>
+            <Field label={"Nome"} required {...getFieldPropsStateError(inputsState, 'name')}>
                 <Input placeholder="digite aqui" required name="name" />
             </Field>
         </div>
